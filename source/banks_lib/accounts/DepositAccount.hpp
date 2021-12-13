@@ -11,7 +11,8 @@ namespace banks {
 
 class DepositAccount : public IAccount {
  public:
-  explicit DepositAccount(AccountId account_id, const Percentage& deposit_percent, Time deadline);
+  explicit DepositAccount(AccountId account_id,
+                          const Percentage& deposit_percent, Time deadline);
 
   OperationStatus Withdraw(Money delta) override;
   OperationStatus Refill(Money delta) override;
@@ -23,7 +24,7 @@ class DepositAccount : public IAccount {
 
   void AbortOperation(IOperation::Ptr operation) override;
 
-private:
+ private:
   Percentage percentage_;
   Time deadline_;
   Time months_count_;

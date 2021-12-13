@@ -15,7 +15,7 @@ class Bot : public IUser {
 
   void Step() override;
 
-protected:
+ protected:
   void CreateAccount(BankId bank_id, eAccountType account_type) override;
   Money GetBalance(AccountId account_id) override;
   std::vector<AccountId> ListAccounts() override;

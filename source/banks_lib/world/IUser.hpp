@@ -12,12 +12,13 @@
 namespace banks {
 
 class IUser {
-public:
-  explicit IUser(const UserInfo& user_info) : user_info_(user_info) {}
+ public:
+  explicit IUser(const UserInfo& user_info) : user_info_(user_info) {
+  }
 
   virtual void Step() = 0;
 
-protected:
+ protected:
   virtual void CreateAccount(BankId bank_id, eAccountType account_type) = 0;
   virtual Money GetBalance(AccountId account_id) = 0;
   virtual std::vector<AccountId> ListAccounts() = 0;

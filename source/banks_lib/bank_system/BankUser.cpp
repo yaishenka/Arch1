@@ -6,10 +6,9 @@
 
 using namespace banks;
 
-BankUser::BankUser(UserId user_id, std::shared_ptr<Bank> bank, const UserInfo& user_info)
-    : user_id_(user_id),
-      bank_(std::move(bank)),
-      user_info_(user_info) {
+BankUser::BankUser(UserId user_id, std::shared_ptr<Bank> bank,
+                   const UserInfo& user_info)
+    : user_id_(user_id), bank_(std::move(bank)), user_info_(user_info) {
 }
 
 void BankUser::SetAddress(std::string address) {

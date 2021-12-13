@@ -14,8 +14,8 @@ using Money = int64_t;
 
 // ...123,45
 struct Percentage {
-  uint16_t integer; // ...123,
-  uint16_t fraction; // 45
+  uint16_t integer;   // ...123,
+  uint16_t fraction;  // 45
 };
 
 using AccountId = size_t;

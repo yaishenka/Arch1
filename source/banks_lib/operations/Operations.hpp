@@ -52,7 +52,8 @@ class RefillOperation : public IOperation {
 
 class AccruePercentagesOperation : public IOperation {
  public:
-  AccruePercentagesOperation(Money delta, OperationId operation_id, Percentage percents)
+  AccruePercentagesOperation(Money delta, OperationId operation_id,
+                             Percentage percents)
       : IOperation(delta, operation_id), percents_(std::move(percents)) {
   }
 

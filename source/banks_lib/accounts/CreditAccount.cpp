@@ -6,15 +6,18 @@
 
 using namespace banks;
 
-CreditAccount::CreditAccount(AccountId account_id, Money credit_limit, const Percentage& percentage)
-: IAccount(account_id), credit_limit_(credit_limit), percentage_(percentage) {
+CreditAccount::CreditAccount(AccountId account_id, Money credit_limit,
+                             const Percentage& percentage)
+    : IAccount(account_id),
+      credit_limit_(credit_limit),
+      percentage_(percentage) {
 }
 
 OperationStatus CreditAccount::Withdraw(Money delta) {
   eStatus status = account_impl_->DecreaseBalance(delta);
   if (status == eStatus::eOk) {
     operation_history_.Push(
-      std::make_shared<WithdrawOperation>(delta, next_free_op_id_));
+        std::make_shared<WithdrawOperation>(delta, next_free_op_id_));
 
     return OperationStatus{next_free_op_id_++, status};
   } else {
@@ -32,7 +35,7 @@ OperationStatus CreditAccount::Refill(Money delta) {
 }
 
 void CreditAccount::Step() {
-  AccruePercents(); // TODO proper step
+  AccruePercents();  // TODO proper step
 }
 
 OperationStatus CreditAccount::AccruePercents() {
@@ -40,9 +43,9 @@ OperationStatus CreditAccount::AccruePercents() {
     return {0, eStatus::eDenied};
   }
 
-  Money delta = (credit_limit_ - GetBalance()) * (percentage_.integer * kHundredPercent +
-    percentage_.fraction) /
-    (kHundredPercent * kHundredPercent);
+  Money delta = (credit_limit_ - GetBalance()) *
+                (percentage_.integer * kHundredPercent + percentage_.fraction) /
+                (kHundredPercent * kHundredPercent);
 
   eStatus status = account_impl_->DecreaseBalance(delta);
   if (status == eStatus::eOk) {

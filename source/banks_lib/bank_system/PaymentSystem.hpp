@@ -12,8 +12,10 @@
 namespace banks {
 
 class PaymentSystem {
-public:
-  eStatus Transfer(AccountId source_account, BankUser::Ptr source_user, AccountId target_account, BankId target_bank_id, Money delta);
+ public:
+  eStatus Transfer(AccountId source_account, BankUser::Ptr source_user,
+                   AccountId target_account, BankId target_bank_id,
+                   Money delta);
 
   void RegisterBank(BankId bank_id, Bank::Ptr bank) {
     id_to_bank_[bank_id] = bank;
@@ -21,8 +23,8 @@ public:
 
   void Abort(TransactionId transaction_id);
 
-private:
+ private:
   std::unordered_map<BankId, Bank::Ptr> id_to_bank_;
 };
 
-}
+}  // namespace banks

@@ -43,8 +43,8 @@ class Bank : public std::enable_shared_from_this<Bank> {
   eStatus Transfer(AccountId source_id, std::shared_ptr<BankUser> source,
                    AccountId target_id, Money delta);
 
-  eStatus Withdraw(AccountId account_id,
-                   Money delta, std::shared_ptr<BankUser> bank_user);
+  eStatus Withdraw(AccountId account_id, Money delta,
+                   std::shared_ptr<BankUser> bank_user);
   eStatus Refill(AccountId account_id, Money delta);
 
   void Upgrade(AccountId account_id, std::shared_ptr<BankUser> bank_user);
@@ -56,7 +56,7 @@ class Bank : public std::enable_shared_from_this<Bank> {
 
   BankId bank_id_;
 
-  ILogger::Ptr logger_; // TODO logging
+  ILogger::Ptr logger_;  // TODO logging
 
   AccountFabric account_fabric_;
   AccountConditions conditions_;
@@ -68,7 +68,8 @@ class Bank : public std::enable_shared_from_this<Bank> {
   std::unordered_map<UserId, std::vector<AccountId>> user_to_accounts_;
 
   std::unordered_map<OperationId, TransactionId> operation_to_transaction_;
-  std::unordered_map<TransactionId, std::vector<OperationId>> transaction_to_operation_;
+  std::unordered_map<TransactionId, std::vector<OperationId>>
+      transaction_to_operation_;
   TransactionId next_transaction_id_;
 };
 

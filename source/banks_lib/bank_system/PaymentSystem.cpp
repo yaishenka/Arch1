@@ -6,16 +6,20 @@
 
 using namespace banks;
 
-eStatus PaymentSystem::Transfer(AccountId source_account, BankUser::Ptr source_user, AccountId target_account, BankId target_bank_id, Money delta) {
+eStatus PaymentSystem::Transfer(AccountId source_account,
+                                BankUser::Ptr source_user,
+                                AccountId target_account, BankId target_bank_id,
+                                Money delta) {
   // TODO check if banks are registered
   BankId source_bank_id = source_user->GetBankId();
-//  if (target_bank_id == source_bank_id) {
-//
-//  } else {
-//
-//  }
+  //  if (target_bank_id == source_bank_id) {
+  //
+  //  } else {
+  //
+  //  }
 
-  eStatus status = id_to_bank_[source_bank_id]->Withdraw(source_account, delta, source_user);
+  eStatus status =
+      id_to_bank_[source_bank_id]->Withdraw(source_account, delta, source_user);
   if (status != eStatus::eOk) {
     return status;
   }

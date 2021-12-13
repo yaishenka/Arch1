@@ -21,7 +21,6 @@ void World::Run(size_t num_steps) {
 }
 
 void World::Step() {
-
 }
 
 void World::AddBank(BankId bank_id) {

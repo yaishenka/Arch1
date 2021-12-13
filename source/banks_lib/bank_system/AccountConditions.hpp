@@ -15,4 +15,4 @@ struct AccountConditions {
   Time deadline;
 };
 
-}
+}  // namespace banks

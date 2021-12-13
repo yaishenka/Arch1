@@ -44,16 +44,15 @@ OperationStatus DepositAccount::Refill(Money delta) {
 }
 
 void DepositAccount::Step() {
-  AccruePercents(); // TODO proper step
+  AccruePercents();  // TODO proper step
 }
 
 OperationStatus DepositAccount::AccruePercents() {
   ++months_count_;
 
-  Money delta =
-      GetBalance() *
-      (percentage_.integer * kHundredPercent + percentage_.fraction) /
-      (kHundredPercent * kHundredPercent);
+  Money delta = GetBalance() *
+                (percentage_.integer * kHundredPercent + percentage_.fraction) /
+                (kHundredPercent * kHundredPercent);
 
   eStatus status = account_impl_->IncreaseBalance(delta);
   if (status == eStatus::eOk) {

@@ -10,7 +10,8 @@ namespace banks {
 
 class CreditAccount : public IAccount {
  public:
-  explicit CreditAccount(AccountId account_id, Money credit_limit, const Percentage& percentage);
+  explicit CreditAccount(AccountId account_id, Money credit_limit,
+                         const Percentage& percentage);
 
   OperationStatus Withdraw(Money delta) override;
   OperationStatus Refill(Money delta) override;
@@ -22,7 +23,7 @@ class CreditAccount : public IAccount {
 
   void AbortOperation(IOperation::Ptr operation) override;
 
-private:
+ private:
   Money credit_limit_;
   Percentage percentage_;
 };

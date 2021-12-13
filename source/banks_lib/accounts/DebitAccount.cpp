@@ -37,15 +37,13 @@ OperationStatus DebitAccount::Refill(Money delta) {
 }
 
 void DebitAccount::Step() {
-  AccruePercents(); // TODO proper step
+  AccruePercents();  // TODO proper step
 }
 
 OperationStatus DebitAccount::AccruePercents() {
-  Money delta =
-    GetBalance() *
-      (percentage_.integer * kHundredPercent +
-       percentage_.fraction) /
-      (kHundredPercent * kHundredPercent);
+  Money delta = GetBalance() *
+                (percentage_.integer * kHundredPercent + percentage_.fraction) /
+                (kHundredPercent * kHundredPercent);
 
   eStatus status = account_impl_->IncreaseBalance(delta);
   if (status == eStatus::eOk) {

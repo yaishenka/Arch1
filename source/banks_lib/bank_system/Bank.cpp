@@ -35,13 +35,17 @@ AccountId Bank::CreateAccount(eAccountType type,
   IAccount::Ptr new_account;
   switch (type) {
     case eAccountType::eDebit:
-      new_account = account_fabric_.CreateDebitAccount(conditions_.debit_percentage);
+      new_account =
+          account_fabric_.CreateDebitAccount(conditions_.debit_percentage);
       break;
     case eAccountType::eCredit:
-      new_account = account_fabric_.CreateCreditAccount(conditions_.credit_limit, conditions_.credit_percentage);
+      new_account = account_fabric_.CreateCreditAccount(
+          conditions_.credit_limit, conditions_.credit_percentage);
       break;
     case eAccountType::eDeposit:
-      new_account = account_fabric_.CreateDepositAccount(conditions_.deposit_percent, conditions_.deadline);
+      new_account = account_fabric_.CreateDepositAccount(
+          conditions_.deposit_percent,
+          conditions_.deadline);  // TODO initial sum percentage
       break;
   }
 
@@ -62,7 +66,7 @@ std::vector<AccountId> Bank::ListAccounts(std::shared_ptr<BankUser> bank_user) {
 }
 
 eStatus Bank::GiveAccess(AccountId account_id, std::shared_ptr<BankUser> owner,
-                   std::shared_ptr<BankUser> coowner) {
+                         std::shared_ptr<BankUser> coowner) {
   if (!CheckAccess(account_id, owner)) {
     return eStatus::eDenied;
   }
@@ -76,7 +80,8 @@ eStatus Bank::GiveAccess(AccountId account_id, std::shared_ptr<BankUser> owner,
   return eStatus::eOk;
 }
 
-Money Bank::GetBalance(AccountId account_id, std::shared_ptr<BankUser> bank_user) {
+Money Bank::GetBalance(AccountId account_id,
+                       std::shared_ptr<BankUser> bank_user) {
   if (!CheckAccess(account_id, bank_user)) {
     return 0;
   }
@@ -85,13 +90,13 @@ Money Bank::GetBalance(AccountId account_id, std::shared_ptr<BankUser> bank_user
 }
 
 eStatus Bank::Transfer(AccountId source_id, std::shared_ptr<BankUser> source,
-                 AccountId target_id, Money delta) {
+                       AccountId target_id, Money delta) {
   throw std::runtime_error("transfer unimplemented");
-  return eStatus::eDenied; // TODO
+  return eStatus::eDenied;  // TODO
 }
 
-eStatus Bank::Withdraw(AccountId account_id,
-                 Money delta, std::shared_ptr<BankUser> bank_user) {
+eStatus Bank::Withdraw(AccountId account_id, Money delta,
+                       std::shared_ptr<BankUser> bank_user) {
   if (!CheckAccess(account_id, bank_user)) {
     return eStatus::eDenied;
   }
@@ -130,10 +135,11 @@ void Bank::Upgrade(AccountId account_id, std::shared_ptr<BankUser> bank_user) {
 }
 
 void Bank::Abort(TransactionId transaction_id) {
-  throw std::runtime_error("abort error"); // TODO
+  throw std::runtime_error("abort error");  // TODO
 }
 
-bool Bank::CheckAccess(AccountId account_id, std::shared_ptr<BankUser> bank_user) {
+bool Bank::CheckAccess(AccountId account_id,
+                       std::shared_ptr<BankUser> bank_user) {
   if (user_to_accounts_.find(account_id) != user_to_accounts_.end()) {
     const auto& accounts = user_to_accounts_[account_id];
     for (AccountId id : accounts) {

@@ -10,7 +10,6 @@ TelegramUser::TelegramUser(UserInfo user_info) : IUser(user_info) {
 }
 
 void TelegramUser::Step() {
-
 }
 
 void TelegramUser::CreateAccount(BankId bank_id, eAccountType account_type) {

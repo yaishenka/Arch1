@@ -22,7 +22,7 @@ class DebitAccount : public IAccount {
 
   void AbortOperation(IOperation::Ptr operation) override;
 
-private:
+ private:
   Percentage percentage_;
 };
 
