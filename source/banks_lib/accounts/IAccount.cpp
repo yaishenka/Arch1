@@ -1,9 +1,10 @@
-#include "IAccount.hpp"
-#include "TrustedAccount.hpp"
+#include <banks_lib/accounts/IAccount.hpp>
+#include <banks_lib/accounts/TrustedAccount.hpp>
 
 using namespace banks;
 
-IAccount::IAccount(AccountId account_id) : account_id_(account_id) {}
+IAccount::IAccount(AccountId account_id) : account_id_(account_id), next_free_op_id_(0) {
+}
 
 void IAccount::Upgrade() {
   auto trusted_account =
@@ -16,7 +17,8 @@ void IAccount::Upgrade() {
   account_impl_ = std::make_shared<TrustedAccount>(account_impl_->GetBalance());
 }
 
-std::vector<IOperation::Ptr> IAccount::AbortOperation(OperationId operation_id) {
+std::vector<IOperation::Ptr> IAccount::AbortOperation(
+    OperationId operation_id) {
   std::vector<IOperation::Ptr> history_suffix;
 
   if (!operation_history_.HasOperation(operation_id)) {

@@ -1,7 +1,10 @@
-add_library(BanksLibrary SHARED accounts/IAccount.cpp accounts/TrustedAccount.cpp accounts/UntrustedAccount.cpp OperationHistory.cpp)
+set(LIB_TARGET BanksLibrary)
 
-install(
-    TARGETS BanksLibrary
-    RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin
-    LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/bin
-)
+get_filename_component(LIB_INCLUDE_PATH ".." ABSOLUTE)
+get_filename_component(LIB_PATH "." ABSOLUTE)
+
+file(GLOB_RECURSE LIB_CXX_SOURCES ${LIB_PATH}/*.cpp)
+file(GLOB_RECURSE LIB_HEADERS ${LIB_PATH}/*.hpp)
+
+add_library(${LIB_TARGET} STATIC ${LIB_CXX_SOURCES} ${LIB_HEADERS})
+target_include_directories(${LIB_TARGET} PUBLIC ${LIB_INCLUDE_PATH})

@@ -1,7 +1,11 @@
-#include <iostream>
-//#include "banks_lib/accounts/IAccountUserInterface.hpp"
+#include <banks_lib/world/World.hpp>
+
+using namespace banks;
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
+  World world;
+
+  world.Run();
+
   return 0;
 }

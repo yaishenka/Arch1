@@ -1,8 +1,9 @@
-#include "UntrustedAccount.hpp"
+#include <banks_lib/accounts/UntrustedAccount.hpp>
 
 using namespace banks;
 
-UntrustedAccount::UntrustedAccount(Money balance): IAccountImpl(balance) {}
+UntrustedAccount::UntrustedAccount(Money balance) : IAccountImpl(balance) {
+}
 
 eStatus UntrustedAccount::IncreaseBalance(Money delta) {
   balance_ += delta;
