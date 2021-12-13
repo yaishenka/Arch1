@@ -11,11 +11,11 @@ DepositAccount::DepositAccount(AccountId account_id,
     : IAccount(account_id),
       percentage_(deposit_percent),
       deadline_(deadline),
-      months_count_(0) {
+      time_(0) {
 }
 
 OperationStatus DepositAccount::Withdraw(Money delta) {
-  if (months_count_ < deadline_) {
+  if (time_ < deadline_) {
     return OperationStatus{0, eStatus::eDenied};
   }
 
@@ -48,7 +48,7 @@ void DepositAccount::Step() {
 }
 
 OperationStatus DepositAccount::AccruePercents() {
-  ++months_count_;
+  ++time_;
 
   Money delta = GetBalance() *
                 (percentage_.integer * kHundredPercent + percentage_.fraction) /

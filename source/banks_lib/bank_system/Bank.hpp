@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <string>
 
-#include <banks_lib/world/UserInfo.hpp>
+#include "banks_lib/users/UserInfo.hpp"
 #include <banks_lib/accounts/AccountFabric.hpp>
 #include <banks_lib/logger/ILogger.hpp>
 #include <banks_lib/bank_system/AccountConditions.hpp>
@@ -15,22 +15,24 @@
 namespace banks {
 
 class BankUser;
+class PaymentSystem;
 
 class Bank : public std::enable_shared_from_this<Bank> {
  public:
   using Ptr = std::shared_ptr<Bank>;
 
-  explicit Bank(BankId bank_id, const Percentage& debit_percentage);
+  explicit Bank(BankId bank_id);
 
   BankId GetBankId() const {
     return bank_id_;
   }
 
   void SetLogger(ILogger::Ptr logger);
+  void SetAccountConditions(AccountConditions conditions);
+  void ConnectToPaymentSystem(
+      const std::shared_ptr<PaymentSystem>& payment_system);
 
   std::shared_ptr<BankUser> CreateBankUser(const UserInfo& user_info);
-
-  void SetAccountConditions(AccountConditions conditions);
 
   AccountId CreateAccount(eAccountType type,
                           std::shared_ptr<BankUser> bank_user);
@@ -51,15 +53,18 @@ class Bank : public std::enable_shared_from_this<Bank> {
 
   void Abort(TransactionId transaction_id);
 
+  void Step();
+
  private:
   bool CheckAccess(AccountId account_id, std::shared_ptr<BankUser> bank_user);
 
   BankId bank_id_;
+  std::weak_ptr<PaymentSystem> payment_system_;
 
   ILogger::Ptr logger_;  // TODO logging
 
   AccountFabric account_fabric_;
-  AccountConditions conditions_;
+  std::optional<AccountConditions> conditions_;
   std::unordered_map<AccountId, IAccount::Ptr> accounts_;
   std::unordered_map<AccountId, std::vector<UserId>> account_to_users_;
 

@@ -7,6 +7,7 @@
 
 #include <cctype>
 #include <cstdint>
+#include <iostream>
 
 namespace banks {
 

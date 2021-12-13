@@ -1,10 +1,13 @@
 #include <banks_lib/accounts/IAccount.hpp>
+#include <banks_lib/accounts/UntrustedAccount.hpp>
 #include <banks_lib/accounts/TrustedAccount.hpp>
 
 using namespace banks;
 
 IAccount::IAccount(AccountId account_id)
-    : account_id_(account_id), next_free_op_id_(0) {
+    : account_impl_(std::make_shared<UntrustedAccount>(0)),
+      account_id_(account_id),
+      next_free_op_id_(0) {
 }
 
 void IAccount::Upgrade() {

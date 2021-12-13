@@ -1,11 +1,13 @@
-#include <banks_lib/world/World.hpp>
+#include <banks_lib/world/WorldFactory.hpp>
 
 using namespace banks;
 
 int main() {
-  World world;
+  WorldFactory world_factory;
 
-  world.Run();
+  IWorld::Ptr world = world_factory.CreateSimulation();
+
+  world->Run();
 
   return 0;
 }

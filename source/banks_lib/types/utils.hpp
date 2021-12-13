@@ -6,22 +6,26 @@
 
 #include <memory>
 
-template <class B, class T>
-inline std::shared_ptr<B> As(const std::shared_ptr<T>& pointer) {
-  return std::dynamic_pointer_cast<B>(pointer);
-}
+#include <banks_lib/types/types.hpp>
+#include <banks_lib/bank_system/AccountConditions.hpp>
+
+std::istream& operator>>(std::istream& stream, banks::Percentage& percentage);
+
+std::istream& operator>>(std::istream& stream,
+                         banks::AccountConditions& conditions);
+
+namespace banks {
 
 template <class B, class T>
-inline bool Is(const std::shared_ptr<T>& pointer) {
-  return std::dynamic_pointer_cast<B>(pointer) != nullptr;
-}
+inline std::shared_ptr<B> As(const std::shared_ptr<T>& pointer);
 
 template <class B, class T>
-inline const B* As(const T* pointer) {
-  return dynamic_cast<const B*>(pointer);
-}
+inline bool Is(const std::shared_ptr<T>& pointer);
 
 template <class B, class T>
-inline bool Is(const T* pointer) {
-  return dynamic_cast<const B*>(pointer) != nullptr;
-}
+inline const B* As(const T* pointer);
+
+template <class B, class T>
+inline bool Is(const T* pointer);
+
+}  // namespace banks

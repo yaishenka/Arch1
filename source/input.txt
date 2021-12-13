@@ -1,0 +1,37 @@
+new bank
+14.508
+5
+17
+1
+2
+
+new bot
+egor
+letov
+no
+
+actor 0
+
+create
+0 debit
+
+list accounts
+0
+
+operate refill
+0 0 10
+
+balance 0 0
+
+stop
+end
+
+actor 0
+
+balance 0 0
+
+stop
+
+end
+
+finish

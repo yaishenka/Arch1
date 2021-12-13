@@ -4,10 +4,11 @@
 
 #include <banks_lib/bank_system/Bank.hpp>
 #include <banks_lib/bank_system/BankUser.hpp>
+#include <banks_lib/bank_system/PaymentSystem.hpp>
 
 using namespace banks;
 
-Bank::Bank(BankId bank_id, const Percentage& debit_percentage)
+Bank::Bank(BankId bank_id)
     : bank_id_(bank_id),
       account_fabric_(),
       next_free_user_id_(0),
@@ -18,6 +19,17 @@ void Bank::SetLogger(ILogger::Ptr logger) {
   logger_ = std::move(logger);
 }
 
+void Bank::SetAccountConditions(AccountConditions conditions) {
+  conditions_ = std::move(conditions);
+}
+
+void Bank::ConnectToPaymentSystem(
+    const std::shared_ptr<PaymentSystem>& payment_system) {
+  payment_system_ = payment_system;
+
+  payment_system_.lock()->RegisterBank(bank_id_, shared_from_this());
+}
+
 std::shared_ptr<BankUser> Bank::CreateBankUser(const UserInfo& user_info) {
   users_.insert(next_free_user_id_);
   user_to_accounts_[next_free_user_id_] = {};
@@ -26,26 +38,22 @@ std::shared_ptr<BankUser> Bank::CreateBankUser(const UserInfo& user_info) {
                                     user_info);
 }
 
-void Bank::SetAccountConditions(AccountConditions conditions) {
-  conditions_ = std::move(conditions);
-}
-
 AccountId Bank::CreateAccount(eAccountType type,
                               std::shared_ptr<BankUser> bank_user) {
   IAccount::Ptr new_account;
   switch (type) {
     case eAccountType::eDebit:
       new_account =
-          account_fabric_.CreateDebitAccount(conditions_.debit_percentage);
+          account_fabric_.CreateDebitAccount(conditions_->debit_percentage);
       break;
     case eAccountType::eCredit:
       new_account = account_fabric_.CreateCreditAccount(
-          conditions_.credit_limit, conditions_.credit_percentage);
+          conditions_->credit_limit, conditions_->credit_percentage);
       break;
     case eAccountType::eDeposit:
       new_account = account_fabric_.CreateDepositAccount(
-          conditions_.deposit_percent,
-          conditions_.deadline);  // TODO initial sum percentage
+          conditions_->deposit_percent,
+          conditions_->deadline);  // TODO initial sum percentage
       break;
   }
 
@@ -54,6 +62,7 @@ AccountId Bank::CreateAccount(eAccountType type,
 
   UserId user_id = bank_user->GetUserId();
   account_to_users_[account_id] = {user_id};
+  user_to_accounts_[user_id].emplace_back(account_id);
 
   return account_id;
 }
@@ -150,4 +159,10 @@ bool Bank::CheckAccess(AccountId account_id,
   }
 
   return false;
+}
+
+void Bank::Step() {
+  for (auto& [id, account] : accounts_) {
+    account->Step();
+  }
 }

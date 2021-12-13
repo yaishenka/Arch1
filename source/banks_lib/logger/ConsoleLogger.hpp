@@ -11,48 +11,16 @@ namespace banks {
 
 class ConsoleLogger : public ILogger {
  public:
-  void LogWithdraw(Money delta, ExtraInfo extra_info = std::nullopt) override {
-    PrintSeparator();
-
-    std::cerr << "withdraw: " << delta << std::endl;
-    if (extra_info) {
-      std::cerr << "[extra] " << *extra_info << std::endl;
-    }
-  }
-
-  void LogRefill(Money delta, ExtraInfo extra_info = std::nullopt) override {
-    PrintSeparator();
-
-    std::cerr << "refill: " << delta << std::endl;
-    if (extra_info) {
-      std::cerr << "[extra] " << *extra_info << std::endl;
-    }
-  }
-
+  void LogWithdraw(Money delta, ExtraInfo extra_info = std::nullopt) override;
+  void LogRefill(Money delta, ExtraInfo extra_info = std::nullopt) override;
   void LogError(std::string_view reason,
-                ExtraInfo extra_info = std::nullopt) override {
-    PrintSeparator();
-
-    std::cerr << "ERROR: " << reason << std::endl;
-    if (extra_info) {
-      std::cerr << "[extra] " << *extra_info << std::endl;
-    }
-  }
+                ExtraInfo extra_info = std::nullopt) override;
 
  private:
-  void PrintSeparator() {
-    std::cerr << '\n';
-
-    static size_t num_separators = 80;
-    for (size_t i = 0; i < num_separators; ++i) {
-      std::cerr << kSeparator;
-    }
-
-    std::cerr << '\n';
-    std::cerr << std::endl;
-  }
+  void PrintSeparator();
 
   static const char kSeparator = '-';
+  std::ostream& stream_ = std::cout;
 };
 
 }  // namespace banks

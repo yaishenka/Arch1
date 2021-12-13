@@ -27,7 +27,7 @@ class DepositAccount : public IAccount {
  private:
   Percentage percentage_;
   Time deadline_;
-  Time months_count_;
+  Time time_;
 };
 
 }  // namespace banks
